@@ -47,3 +47,4 @@ def test():
     assert Solution().search([2, 5, 6, 0, 0, 1, 2], 0) == True
     assert Solution().search([2, 5, 6, 0, 0, 1, 2], 3) == False
     assert Solution().search([1, 0, 1, 1, 1], 0) == True
+    assert Solution().search([1], 0) == False
