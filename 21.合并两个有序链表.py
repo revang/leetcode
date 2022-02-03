@@ -17,21 +17,23 @@ class ListNode:
 
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        pre = ListNode(None)
-        cur = pre
-        while list1 and list2:
+        dummy = ListNode(None)
+        cur = dummy
+        while list1 or list2:
+            if not list1:
+                cur.next = list2
+                break
+            if not list2:
+                cur.next = list1
+                break
             if list1.val <= list2.val:
-                nextnode = ListNode(list1.val)
+                cur.next = ListNode(list1.val)
+                cur = cur.next
                 list1 = list1.next
             else:
-                nextnode = ListNode(list2.val)
+                cur.next = ListNode(list2.val)
+                cur = cur.next
                 list2 = list2.next
-            cur.next = nextnode
-            cur = cur.next
-        if list1:
-            cur.next = list1
-        if list2:
-            cur.next = list2
-        return pre.next
+        return dummy.next
 
 # @lc code=end
