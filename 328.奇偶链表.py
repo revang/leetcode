@@ -10,13 +10,27 @@ class ListNode:
         self.next = next
 
 
-def is_equal_listnode(head1, head2):
-    """ 比较两个单链表是否相等 """
-    if not head1 and not head2:
-        return True
-    if not head1 or not head2:
-        return False
-    return head1.val == head2.val and is_equal_listnode(head1.next, head2.next)
+def init_listnode(nums):
+    """ 列表生成单链表 """
+    if not nums:
+        return
+    dummy = ListNode(None)
+    cur = dummy
+    for i in range(len(nums)):
+        next = ListNode(nums[i])
+        cur.next = next
+        cur = cur.next
+    return dummy.next
+
+
+def print_listnode(head):
+    """ 打印单链表 """
+    cur = head
+    while cur:
+        print("{}->".format(cur.val), end="")
+        cur = cur.next
+    print("None")
+
 
 # @lc code=start
 
@@ -26,7 +40,7 @@ class Solution:
         if not head:
             return head
         evenhead = head.next
-        odd, even = head, evenhead
+        odd, even = head, head.next  # odd 奇数, even 偶数
         while even and even.next:
             odd.next = odd.next.next
             odd = odd.next
@@ -39,6 +53,14 @@ class Solution:
 
 
 def test():
-    val1 = Solution().oddEvenList(ListNode(1, ListNode(2, ListNode(3, ListNode(4, ListNode(5))))))
-    val2 = ListNode(1, ListNode(3, ListNode(5, ListNode(2, ListNode(4)))))
-    assert is_equal_listnode(val1, val2)
+    print("demo 1")
+    head = init_listnode([1, 2, 3, 4, 5])
+    print_listnode(head)
+    ans = Solution().oddEvenList(head)
+    print_listnode(ans)
+
+    print("demo 2")
+    head = init_listnode([2, 1, 3, 5, 6, 4, 7])
+    print_listnode(head)
+    ans = Solution().oddEvenList(head)
+    print_listnode(ans)

@@ -11,13 +11,26 @@ class ListNode:
         self.next = next
 
 
-def is_equal_listnode(head1, head2):
-    """ 比较两个单链表是否相等 """
-    if not head1 and not head2:
-        return True
-    if not head1 or not head2:
-        return False
-    return head1.val == head2.val and is_equal_listnode(head1.next, head2.next)
+def init_listnode(nums):
+    """ 列表生成单链表 """
+    if not nums:
+        return
+    dummy = ListNode(None)
+    cur = dummy
+    for i in range(len(nums)):
+        next = ListNode(nums[i])
+        cur.next = next
+        cur = cur.next
+    return dummy.next
+
+
+def print_listnode(head):
+    """ 打印单链表 """
+    cur = head
+    while cur:
+        print("{}->".format(cur.val), end="")
+        cur = cur.next
+    print("None")
 
 # @lc code=start
 
@@ -36,8 +49,14 @@ class Solution:
 
 
 def test():
-    val = Solution().deleteDuplicates(ListNode(1, ListNode(1, ListNode(2))))
-    assert is_equal_listnode(val, ListNode(1, ListNode(2)))
+    print("demo 1:")
+    head = init_listnode([1, 1, 2])
+    print_listnode(head)
+    ans = Solution().deleteDuplicates(head)
+    print_listnode(ans)
 
-    val = Solution().deleteDuplicates(ListNode(1, ListNode(1)))
-    assert is_equal_listnode(val, ListNode(1))
+    print("demo 2:")
+    head = init_listnode([1, 1, 2, 3, 3])
+    print_listnode(head)
+    ans = Solution().deleteDuplicates(head)
+    print_listnode(ans)

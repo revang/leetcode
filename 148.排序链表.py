@@ -13,6 +13,19 @@ class ListNode:
         self.next = next
 
 
+def init_listnode(nums):
+    """ 列表生成单链表 """
+    if not nums:
+        return
+    dummy = ListNode(None)
+    cur = dummy
+    for i in range(len(nums)):
+        next = ListNode(nums[i])
+        cur.next = next
+        cur = cur.next
+    return dummy.next
+
+
 def print_listnode(head):
     """ 打印单链表 """
     cur = head
@@ -22,23 +35,13 @@ def print_listnode(head):
     print("None")
 
 
-def is_equal_listnode(head1, head2):
-    """ 比较两个单链表是否相等 """
-    if not head1 and not head2:
-        return True
-    if not head1 or not head2:
-        return False
-    return head1.val == head2.val and is_equal_listnode(head1.next, head2.next)
-
-
 # @lc code=start
-# Definition for singly-linked list.
+
 
 class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head or not head.next:
             return head
-
         slow, fast = head, head
         while fast.next and fast.next.next:
             slow = slow.next
@@ -48,30 +51,33 @@ class Solution:
         left_half = self.sortList(head)
         return self.merge(left_half, right_half)
 
-    def merge(self, head1, head2):
-        dummy = ListNode(None)
+    def merge(self, list1, list2):
+        dummy = ListNode(0)
         cur = dummy
-        cur1, cur2 = head1, head2
-        while cur1 or cur2:
-            if not cur1:
-                cur.next = cur2
-                break
-            if not cur2:
-                cur.next = cur1
-                break
-            if cur1.val < cur2.val:
-                cur.next = ListNode(cur1.val)
+        while list1 and list2:
+            if list1.val <= list2.val:
+                cur.next = ListNode(list1.val)
                 cur = cur.next
-                cur1 = cur1.next
+                list1 = list1.next
             else:
-                cur.next = ListNode(cur2.val)
+                cur.next = ListNode(list2.val)
                 cur = cur.next
-                cur2 = cur2.next
+                list2 = list2.next
+        cur.next = list1 if list1 else list2
         return dummy.next
 
 # @lc code=end
 
 
 def test():
-    res = Solution().sortList(ListNode(4, ListNode(2, ListNode(1, ListNode(3)))))
-    print_listnode(res)
+    print("demo 1")
+    head = init_listnode([4, 2, 1, 3])
+    print_listnode(head)
+    ans = Solution().sortList(head)
+    print_listnode(ans)
+
+    print("demo 2")
+    head = init_listnode([-1, 5, 3, 4, 0])
+    print_listnode(head)
+    ans = Solution().sortList(head)
+    print_listnode(ans)

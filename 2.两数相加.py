@@ -4,12 +4,6 @@
 # [2] 两数相加
 #
 
-"""
-author : revang
-date   : 2022-02-01
-method : 链表
-"""
-
 
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -17,23 +11,36 @@ class ListNode:
         self.next = next
 
 
-def is_equal_listnode(head1, head2):
-    """ 比较两个单链表是否相等 """
-    if not head1 and not head2:
-        return True
-    if not head1 or not head2:
-        return False
-    return head1.val == head2.val and is_equal_listnode(head1.next, head2.next)
+def init_listnode(nums):
+    """ 列表生成单链表 """
+    if not nums:
+        return
+    dummy = ListNode(None)
+    cur = dummy
+    for i in range(len(nums)):
+        next = ListNode(nums[i])
+        cur.next = next
+        cur = cur.next
+    return dummy.next
+
+
+def print_listnode(head):
+    """ 打印单链表 """
+    cur = head
+    while cur:
+        print("{}->".format(cur.val), end="")
+        cur = cur.next
+    print("None")
+
 
 # @lc code=start
-# Definition for singly-linked list.
 
 
 class Solution:
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
         carry = 0
-        pre = ListNode(None)
-        cur = pre
+        dummy = ListNode(0)
+        cur = dummy
         while l1 or l2:
             sum = carry+(l1.val if l1 else 0)+(l2.val if l2 else 0)
             carry = sum//10
@@ -43,14 +50,24 @@ class Solution:
             l2 = l2.next if l2 else None
         if carry == 1:
             cur.next = ListNode(carry)
-        return pre.next
+        return dummy.next
 
 # @lc code=end
 
 
-def testSolution():
-    ans = Solution().addTwoNumbers(ListNode(2, ListNode(4, ListNode(3))), ListNode(5, ListNode(6, ListNode(4))))
-    assert is_equal_listnode(ans, ListNode(7, ListNode(0, ListNode(8))))
+def test():
+    print("demo 1:")
+    l1 = init_listnode([2, 4, 3])
+    l2 = init_listnode([5, 6, 4])
+    print_listnode(l1)
+    print_listnode(l2)
+    ans = Solution().addTwoNumbers(l1, l2)
+    print_listnode(ans)
 
-    ans = Solution().addTwoNumbers(ListNode(9, ListNode(9, ListNode(9, ListNode(9, ListNode(9, ListNode(9, ListNode(9))))))), ListNode(9, ListNode(9, ListNode(9, ListNode(9)))))
-    assert is_equal_listnode(ans, ListNode(8, ListNode(9, ListNode(9, ListNode(9, ListNode(0, ListNode(0, ListNode(0, ListNode(1)))))))))
+    print("demo 2:")
+    l1 = init_listnode([9, 9, 9, 9, 9, 9, 9])
+    l2 = init_listnode([9, 9, 9, 9])
+    print_listnode(l1)
+    print_listnode(l2)
+    ans = Solution().addTwoNumbers(l1, l2)
+    print_listnode(ans)

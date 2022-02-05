@@ -1,11 +1,8 @@
 #
-# @lc app=leetcode.cn id=141 lang=python3
+# @lc app=leetcode.cn id=1290 lang=python3
 #
-# [141] 环形链表
+# [1290] 二进制链表转整数
 #
-
-from typing import Optional
-
 
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -34,20 +31,21 @@ def print_listnode(head):
         cur = cur.next
     print("None")
 
-
 # @lc code=start
 
 
 class Solution:
-    def hasCycle(self, head: Optional[ListNode]) -> bool:
-        if not head or not head.next:
-            return False
-        slow, fast = head, head.next
-        while slow != fast:
-            if not fast or not fast.next:
-                return False
-            slow = slow.next
-            fast = fast.next.next
-        return True
+    def getDecimalValue(self, head: ListNode) -> int:
+        ans = 0
+        cur = head
+        while cur:
+            ans = ans*2+cur.val
+            cur = cur.next
+        return ans
 
 # @lc code=end
+
+
+def test():
+    head = init_listnode([1, 0, 1])
+    assert Solution().getDecimalValue(head) == 5

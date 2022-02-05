@@ -1,11 +1,8 @@
 #
-# @lc app=leetcode.cn id=141 lang=python3
+# @lc app=leetcode.cn id=876 lang=python3
 #
-# [141] 环形链表
+# [876] 链表的中间结点
 #
-
-from typing import Optional
-
 
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -34,20 +31,28 @@ def print_listnode(head):
         cur = cur.next
     print("None")
 
-
 # @lc code=start
 
 
 class Solution:
-    def hasCycle(self, head: Optional[ListNode]) -> bool:
-        if not head or not head.next:
-            return False
-        slow, fast = head, head.next
-        while slow != fast:
-            if not fast or not fast.next:
-                return False
-            slow = slow.next
+    def middleNode(self, head: ListNode) -> ListNode:
+        fast, slow = head, head
+        while fast.next and fast.next.next:
             fast = fast.next.next
-        return True
+            slow = slow.next
+        if fast.next:
+            slow = slow.next
+        return slow
+
 
 # @lc code=end
+def test():
+    head = init_listnode([1, 2, 3, 4, 5])
+    print_listnode(head)
+    ans = Solution().middleNode(head)
+    print_listnode(ans)
+
+    head = init_listnode([1, 2, 3, 4, 5, 6])
+    print_listnode(head)
+    ans = Solution().middleNode(head)
+    print_listnode(ans)
