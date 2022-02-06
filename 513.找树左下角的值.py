@@ -1,7 +1,7 @@
 #
-# @lc app=leetcode.cn id=104 lang=python3
+# @lc app=leetcode.cn id=513 lang=python3
 #
-# [104] 二叉树的最大深度
+# [513] 找树左下角的值
 #
 
 from typing import Optional
@@ -39,20 +39,38 @@ def init_tree(values):
         index += 1
     return root
 
-
 # @lc code=start
-# Definition for a binary tree node.
 
 
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
-        if not root:
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        if root is None:
             return 0
-        return max(self.maxDepth(root.left), self.maxDepth(root.right))+1
+        ans = []
+        queue = deque()
+        queue.append(root)
+        while queue:
+            size = len(queue)
+            ans = []
+            for _ in range(size):
+                node = queue.popleft()
+                ans.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return ans[0]
+
 
 # @lc code=end
 
-
 def test():
-    root = init_tree([3, 9, 20, None, None, 15, 7])
-    assert Solution().maxDepth(root) == 3
+    root = init_tree([2, 1, 3])
+    ans = Solution().findBottomLeftValue(root)
+    print(ans)
+    assert ans == 1
+
+    root = init_tree([1, 2, 3, 4, None, 5, 6, None, None, 7])
+    ans = Solution().findBottomLeftValue(root)
+    print(ans)
+    assert ans == 7

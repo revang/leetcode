@@ -5,6 +5,7 @@
 #
 
 from typing import Optional, List
+from collections import deque
 
 
 class TreeNode:
@@ -12,36 +13,58 @@ class TreeNode:
         self.val, self.left, self.right = val, left, right
 
     def __repr__(self):
-        """ print的时候打印自定义的值 """
         return "<Node: {}>".format(self.val)
+
+
+def init_tree(values):
+    queue = deque()
+    root = None
+
+    if values:
+        root = TreeNode(values[0])
+        queue.append(root)
+
+    index = 1
+    while index < len(values):
+        node = queue.popleft()
+
+        if values[index] is not None:
+            node.left = TreeNode(values[index])
+            queue.append(node.left)
+        index += 1
+
+        if index < len(values) and values[index] is not None:
+            node.right = TreeNode(values[index])
+            queue.append(node.right)
+        index += 1
+    return root
 
 # @lc code=start
 
 
 class Solution:
     def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
-        if not root:
-            return []
-
-        res = []
-        cur_nodes = [root]
-        while cur_nodes:
-            # print(cur_nodes)
-            next_nodes = []
-            sum, count = 0, 0
-            for node in cur_nodes:
+        ans = []
+        if root is None:
+            return ans
+        queue = deque()
+        queue.append(root)
+        while len(queue) > 0:
+            count = len(queue)
+            sum = 0
+            for _ in range(count):
+                node = queue.popleft()
                 sum += node.val
-                count += 1
                 if node.left:
-                    next_nodes.append(node.left)
+                    queue.append(node.left)
                 if node.right:
-                    next_nodes.append(node.right)
-            res.append((sum/count))
-            cur_nodes = next_nodes
-        return res
+                    queue.append(node.right)
+            ans.append(sum/count)
+        return ans
 
 # @lc code=end
 
 
 def test():
-    assert Solution().averageOfLevels(TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))) == [3, 14.5, 11]
+    root = init_tree([3, 9, 20, None, None, 15, 7])
+    assert Solution().averageOfLevels(root) == [3.0, 14.5, 11.0]

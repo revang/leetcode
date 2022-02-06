@@ -1,7 +1,7 @@
 #
-# @lc app=leetcode.cn id=104 lang=python3
+# @lc app=leetcode.cn id=437 lang=python3
 #
-# [104] 二叉树的最大深度
+# [437] 路径总和 III
 #
 
 from typing import Optional
@@ -39,20 +39,33 @@ def init_tree(values):
         index += 1
     return root
 
-
 # @lc code=start
-# Definition for a binary tree node.
 
 
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
-        if not root:
+    def pathSum(self, root: TreeNode, targetSum: int) -> int:
+        if root is None:
             return 0
-        return max(self.maxDepth(root.left), self.maxDepth(root.right))+1
+        ans = self.rootSum(root, targetSum)
+        ans += self.pathSum(root.left, targetSum)
+        ans += self.pathSum(root.right, targetSum)
+        return ans
+
+    def pathSumStartWithRoot(self, root, targetSum):
+        if root is None:
+            return 0
+        ans = 1 if root.val == targetSum else 0
+        ans += self.pathSumStartWithRoot(root.left, targetSum-root.val)
+        ans += self.pathSumStartWithRoot(root.right, targetSum-root.val)
+        return ans
+
 
 # @lc code=end
 
 
 def test():
-    root = init_tree([3, 9, 20, None, None, 15, 7])
-    assert Solution().maxDepth(root) == 3
+    root = init_tree([10, 5, -3, 3, 2, None, 11, 3, -2, None, 1])
+    assert Solution().pathSum(root, 8) == 3
+
+    root = init_tree([1, None, 2, None, 3, None, 4, None, 5])
+    assert Solution().pathSum(root, 3) == 2

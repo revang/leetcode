@@ -1,12 +1,8 @@
 #
-# @lc app=leetcode.cn id=23 lang=python3
+# @lc app=leetcode.cn id=147 lang=python3
 #
-# [23] 合并K个升序链表
+# [147] 对链表进行插入排序
 #
-
-from typing import List
-from heapq import heapify, heappop
-
 
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -40,25 +36,22 @@ def print_listnode(head):
 
 
 class Solution:
-    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
-        items = []
-        for node in lists:
-            while node:
-                items.append(node.val)
-                node = node.next
-        heapify(items)  # 构造一个最小堆
+    def insertionSortList(self, head: ListNode) -> ListNode:
         dummy = ListNode(0)
-        cur = dummy
-        while items:
-            nextnode = ListNode(heappop(items))
-            cur.next = nextnode
-            cur = cur.next
+        while head:
+            pre = dummy
+            while pre.next and pre.next.val < head.val:
+                pre = pre.next
+            nextnode = ListNode(head.val, pre.next)
+            pre.next = nextnode
+            head = head.next
         return dummy.next
+
 
 # @lc code=end
 
-
 def test():
-    lists = [init_listnode([1, 4, 5]), init_listnode([1, 3, 4]), init_listnode([2, 6])]
-    ans = Solution().mergeKLists(lists)
+    head = init_listnode([4, 2, 1, 3])
+    print_listnode(head)
+    ans = Solution().insertionSortList(head)
     print_listnode(ans)

@@ -1,7 +1,7 @@
 #
-# @lc app=leetcode.cn id=104 lang=python3
+# @lc app=leetcode.cn id=226 lang=python3
 #
-# [104] 二叉树的最大深度
+# [226] 翻转二叉树
 #
 
 from typing import Optional
@@ -40,19 +40,36 @@ def init_tree(values):
     return root
 
 
+def print_tree(root):
+    if not root:
+        return
+    cur_nodes = [root]
+    while cur_nodes or next_nodes:
+        print(cur_nodes)
+        next_nodes = []
+        for node in cur_nodes:
+            if node.left:
+                next_nodes.append(node.left)
+            if node.right:
+                next_nodes.append(node.right)
+        cur_nodes = next_nodes
+
 # @lc code=start
-# Definition for a binary tree node.
 
 
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
-        if not root:
-            return 0
-        return max(self.maxDepth(root.left), self.maxDepth(root.right))+1
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if root is None:
+            return root
+        left = self.invertTree(root.left)
+        right = self.invertTree(root.right)
+        root.left, root.right = right, left
+        return root
 
 # @lc code=end
 
 
 def test():
-    root = init_tree([3, 9, 20, None, None, 15, 7])
-    assert Solution().maxDepth(root) == 3
+    root = init_tree([2, 1, 3])
+    ans = Solution().invertTree(root)
+    print_tree(ans)

@@ -1,7 +1,7 @@
 #
-# @lc app=leetcode.cn id=104 lang=python3
+# @lc app=leetcode.cn id=110 lang=python3
 #
-# [104] 二叉树的最大深度
+# [110] 平衡二叉树
 #
 
 from typing import Optional
@@ -39,20 +39,26 @@ def init_tree(values):
         index += 1
     return root
 
-
 # @lc code=start
-# Definition for a binary tree node.
 
 
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
+    def isBalanced(self, root: TreeNode) -> bool:
+        if not root:
+            return True
+        return abs(self.depth(root.left)-self.depth(root.right)) <= 1 and self.isBalanced(root.left) and self.isBalanced(root.right)
+
+    def depth(self, root):
         if not root:
             return 0
-        return max(self.maxDepth(root.left), self.maxDepth(root.right))+1
+        return max(self.depth(root.left), self.depth(root.right))+1
 
 # @lc code=end
 
 
 def test():
-    root = init_tree([3, 9, 20, None, None, 15, 7])
-    assert Solution().maxDepth(root) == 3
+    root = init_tree([1, 2, 2, 3, 3, None, None, 4, 4])
+    assert Solution().isBalanced(root) == False
+
+    root = init_tree([])
+    assert Solution().isBalanced(root) == True

@@ -14,8 +14,8 @@ class Solution:
         if not matrix:
             return False
         row = len(matrix)
-        col = len(matrix[0])
-        i, j = 0, col-1
+        column = len(matrix[0])
+        i, j = 0, column-1
         while i < row and j >= 0:
             val = matrix[i][j]
             if val == target:
