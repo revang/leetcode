@@ -1,11 +1,13 @@
 #
-# @lc app=leetcode.cn id=538 lang=python3
+# @lc app=leetcode.cn id=889 lang=python3
 #
-# [538] 把二叉搜索树转换为累加树
+# [889] 根据前序和后序遍历构造二叉树
 #
 
+from typing import List
 from typing import Optional
 from collections import deque
+import sys
 
 
 class TreeNode:
@@ -58,30 +60,20 @@ def print_tree(root):
 
 
 class Solution:
-    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        if not root:
-            return root
+    def constructFromPrePost(self, preorder: List[int], postorder: List[int]) -> TreeNode:
+        pass
 
-        sum = 0
-        stack = deque()
-        stack.append((root, False))
-        while stack:
-            node, visited = stack.pop()
-            if visited:
-                sum = node.val+sum
-                node.val = sum
-            else:
-                if node.left:
-                    stack.append((node.left, False))
-                stack.append((node, True))
-                if node.right:
-                    stack.append((node.right, False))
-        return root
+    def build(self, preorder, postorder, i, j, n):
+        if n <= 0:
+            return
+        root = TreeNode(preorder[i])
+        if n == 1:
+            return root
 
 
 # @lc code=end
 
+
 def test():
-    root = init_tree([4, 1, 6, 0, 2, 5, 7, None, None, None, 3, None, None, None, 8])
-    ans = Solution().convertBST(root)
+    ans = Solution().constructFromPrePost([1, 2, 4, 5, 3, 6, 7], [4, 5, 2, 6, 7, 3, 1])
     print_tree(ans)

@@ -1,11 +1,12 @@
 #
-# @lc app=leetcode.cn id=538 lang=python3
+# @lc app=leetcode.cn id=530 lang=python3
 #
-# [538] 把二叉搜索树转换为累加树
+# [530] 二叉搜索树的最小绝对差
 #
 
 from typing import Optional
 from collections import deque
+import sys
 
 
 class TreeNode:
@@ -39,49 +40,38 @@ def init_tree(values):
         index += 1
     return root
 
-
-def print_tree(root):
-    if not root:
-        return
-    cur_nodes = [root]
-    while cur_nodes or next_nodes:
-        print(cur_nodes)
-        next_nodes = []
-        for node in cur_nodes:
-            if node.left:
-                next_nodes.append(node.left)
-            if node.right:
-                next_nodes.append(node.right)
-        cur_nodes = next_nodes
-
 # @lc code=start
 
 
 class Solution:
-    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        if not root:
-            return root
-
-        sum = 0
+    def getMinimumDifference(self, root: TreeNode) -> int:
+        ans = sys.maxsize
+        last = ans
         stack = deque()
         stack.append((root, False))
         while stack:
             node, visited = stack.pop()
             if visited:
-                sum = node.val+sum
-                node.val = sum
+                ans = min(ans, abs(node.val-last))
+                last = node.val
             else:
-                if node.left:
-                    stack.append((node.left, False))
-                stack.append((node, True))
                 if node.right:
                     stack.append((node.right, False))
-        return root
-
+                stack.append((node, True))
+                if node.left:
+                    stack.append((node.left, False))
+        return ans
 
 # @lc code=end
 
+
 def test():
-    root = init_tree([4, 1, 6, 0, 2, 5, 7, None, None, None, 3, None, None, None, 8])
-    ans = Solution().convertBST(root)
-    print_tree(ans)
+    root = init_tree([4, 2, 6, 1, 3])
+    ans = Solution().getMinimumDifference(root)
+    print(ans)
+    assert ans == 1
+
+    root = init_tree([1, 0, 48, None, None, 12, 49])
+    ans = Solution().getMinimumDifference(root)
+    print(ans)
+    assert ans == 1

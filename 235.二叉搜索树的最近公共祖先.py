@@ -1,7 +1,7 @@
 #
-# @lc app=leetcode.cn id=538 lang=python3
+# @lc app=leetcode.cn id=235 lang=python3
 #
-# [538] 把二叉搜索树转换为累加树
+# [235] 二叉搜索树的最近公共祖先
 #
 
 from typing import Optional
@@ -58,30 +58,27 @@ def print_tree(root):
 
 
 class Solution:
-    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        if not root:
-            return root
-
-        sum = 0
-        stack = deque()
-        stack.append((root, False))
-        while stack:
-            node, visited = stack.pop()
-            if visited:
-                sum = node.val+sum
-                node.val = sum
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        ancestor = root  # ancestor 祖先
+        while ancestor:
+            if ancestor.val < p.val and ancestor.val < q.val:
+                ancestor = ancestor.right
+            elif ancestor.val > p.val and ancestor.val > q.val:
+                ancestor = ancestor.left
             else:
-                if node.left:
-                    stack.append((node.left, False))
-                stack.append((node, True))
-                if node.right:
-                    stack.append((node.right, False))
-        return root
-
+                break
+        return ancestor
 
 # @lc code=end
 
+
 def test():
-    root = init_tree([4, 1, 6, 0, 2, 5, 7, None, None, None, 3, None, None, None, 8])
-    ans = Solution().convertBST(root)
-    print_tree(ans)
+    root = init_tree([6, 2, 8, 0, 4, 7, 9, None, None, 3, 5])
+    ans = Solution().lowestCommonAncestor(root, TreeNode(2), TreeNode(8))
+    print(ans)
+    assert ans.val == 6
+
+    root = init_tree([6, 2, 8, 0, 4, 7, 9, None, None, 3, 5])
+    ans = Solution().lowestCommonAncestor(root, TreeNode(2), TreeNode(4))
+    print(ans)
+    assert ans.val == 2

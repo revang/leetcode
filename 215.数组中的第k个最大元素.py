@@ -27,14 +27,29 @@ from typing import List
 #             return self.findKthLargest(less_part, k-len(great_part)-1)
 
 
-from heapq import heappush, heappop
+from heapq import heappop, heapify, heappush
 
 
-class Solution:
+# class Solution:  # The Kth问题-解法1
+#     def findKthLargest(self, nums: List[int], k: int) -> int:
+#         heap = [-num for num in nums]
+#         heapify(heap)
+#         for _ in range(k-1):
+#             heappop(heap)
+#         return -heappop(heap)
+
+
+class Solution:  # The Kth问题-解法2
     def findKthLargest(self, nums: List[int], k: int) -> int:
-        items = []
+        heap = []
         for num in nums:
-            items.append(num)
+            if len(heap) < k:
+                heappush(heap, num)
+            else:
+                if num >= heap[0]:
+                    heappop(heap)
+                    heappush(heap, num)
+        return heap[0]
 
 
 # @lc code=end
