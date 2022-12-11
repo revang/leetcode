@@ -4,26 +4,12 @@
 # [606] 根据二叉树创建字符串
 #
 
-"""
-author : revang
-date   : 2022-02-02
-method : 二叉树/递归
-"""
-
-from typing import Optional
-
-
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+from typing import List, Optional
+from collections import deque
+from leetcode_tool import *
 
 
 # @lc code=start
-# Definition for a binary tree node.
-
-
 class Solution:
     def tree2str(self, root: Optional[TreeNode]) -> str:
         if not root:
@@ -38,4 +24,5 @@ class Solution:
 
 
 def test():
-    assert Solution().tree2str(TreeNode(1, TreeNode(2, TreeNode(4)), TreeNode(3))) == "1(2(4))(3)"
+    assert Solution().tree2str(Tree([1, 2, 3, 4]).root) == "1(2(4))(3)"
+    assert Solution().tree2str(Tree([1, 2, 3, None, 4]).root) == "1(2()(4))(3)"

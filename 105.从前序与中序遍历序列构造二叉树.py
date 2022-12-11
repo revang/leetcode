@@ -21,15 +21,11 @@ class Solution:
         root = TreeNode(root_val)
 
         # 查找根节点在中序遍历序列中的位置
-        root_index = inorder.index(root_val)
-
-        # 根据根节点将中序遍历序列划分为左子树和右子树
-        inorder_left = inorder[:root_index]
-        inorder_right = inorder[root_index + 1:]
+        root_idx = inorder.index(root_val)
 
         # 构造左子树和右子树
-        root.left = self.buildTree(preorder[1:1 + len(inorder_left)], inorder_left)
-        root.right = self.buildTree(preorder[1 + len(inorder_left):], inorder_right)
+        root.left = self.buildTree(preorder[1:1 + root_idx], inorder[:root_idx])
+        root.right = self.buildTree(preorder[1 + root_idx:], inorder[root_idx + 1:])
 
         return root
 

@@ -6,75 +6,71 @@ class TreeNode:
         self.val, self.left, self.right = val, left, right
 
 
-class Tree:
-    def __init__(self, vals=[]):
-        self.root = None
-        self.create(vals)
+def create_tree(vals):
+    """
+    创建树
+    """
+    if len(vals) == 0:
+        return
 
-    def create(self, vals):
-        """
-        创建树
-        """
-        if len(vals) == 0:
-            return
+    # 创建根节点
+    root = TreeNode(vals[0])
+    cur_nodes = deque()
+    cur_nodes.append(root)
+    idx = 1
 
-        # 创建根节点
-        root = TreeNode(vals[0])
-        cur_nodes = deque()
-        cur_nodes.append(root)
-        idx = 1
-
-        # 遍历值列表，并逐个创建节点
+    # 遍历值列表，并逐个创建节点
+    while cur_nodes:
+        next_nodes = deque()
         while cur_nodes:
-            next_nodes = deque()
-            while cur_nodes:
-                cur = cur_nodes.popleft()
-                if idx < len(vals) and vals[idx]:
-                    cur.left = TreeNode(vals[idx])
-                    next_nodes.append(cur.left)
-                idx += 1
+            cur = cur_nodes.popleft()
+            if idx < len(vals) and vals[idx] is not None:  # 注意: vals[idx] is not None 不能简写成 vals[idx], 可能存在 vals[idx]==0
+                cur.left = TreeNode(vals[idx])
+                next_nodes.append(cur.left)
+            idx += 1
 
-                if idx < len(vals) and vals[idx]:
-                    cur.right = TreeNode(vals[idx])
-                    next_nodes.append(cur.right)
-                idx += 1
+            if idx < len(vals) and vals[idx] is not None:
+                cur.right = TreeNode(vals[idx])
+                next_nodes.append(cur.right)
+            idx += 1
 
-            cur_nodes = next_nodes
+        cur_nodes = next_nodes
 
-        self.root = root
+    return root
 
-    def print(self):
-        """
-        打印树
-        """
-        if not self.root:
-            print()
 
-        # 存储所有节点的值
-        all_vals = []
+def print_tree(root):
+    """
+    打印树
+    """
+    if not root:
+        print()
 
-        # 初始化当前层节点列表
-        cur_nodes = deque()
-        cur_nodes.append(self.root)
+    # 存储所有节点的值
+    all_vals = []
 
-        # 遍历所有层
-        while any(cur_nodes):
-            # 存储当前层节点的值
-            cur_vals = [str(item.val) if item else "None" for item in cur_nodes]
-            all_vals.append(cur_vals)
+    # 初始化当前层节点列表
+    cur_nodes = deque()
+    cur_nodes.append(root)
 
-            # 遍历当前层的所有节点
-            next_nodes = deque()
-            while cur_nodes:
-                cur = cur_nodes.popleft()
-                next_nodes.append(cur.left if cur and cur.left else None)
-                next_nodes.append(cur.right if cur and cur.right else None)
+    # 遍历所有层
+    while any(cur_nodes):
+        # 存储当前层节点的值
+        cur_vals = [str(item.val) if item else "None" for item in cur_nodes]
+        all_vals.append(cur_vals)
 
-            # 更新当前层节点列表
-            cur_nodes = next_nodes
+        # 遍历当前层的所有节点
+        next_nodes = deque()
+        while cur_nodes:
+            cur = cur_nodes.popleft()
+            next_nodes.append(cur.left if cur and cur.left else None)
+            next_nodes.append(cur.right if cur and cur.right else None)
 
-        # 打印所有节点的值
-        print("; ".join([", ".join(cur_vals) for cur_vals in all_vals]))
+        # 更新当前层节点列表
+        cur_nodes = next_nodes
+
+    # 打印所有节点的值
+    print("; ".join([", ".join(cur_vals) for cur_vals in all_vals]))
 
 
 def is_same_tree(p: TreeNode, q: TreeNode) -> bool:

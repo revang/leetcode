@@ -1,7 +1,7 @@
 #
-# @lc app=leetcode.cn id=102 lang=python3
+# @lc app=leetcode.cn id=107 lang=python3
 #
-# [102] 二叉树的层序遍历
+# [107] 二叉树的层序遍历 II
 #
 
 from typing import List, Optional
@@ -12,7 +12,7 @@ from leetcode_tool import *
 
 
 class Solution:
-    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
         if not root:
             return []
 
@@ -29,12 +29,13 @@ class Solution:
                 if cur.right:
                     next_nodes.append(cur.right)
             cur_nodes = next_nodes
+
         return all_vals[::-1]
 
 # @lc code=end
 
 
 def test():
-    assert Solution().levelOrder(Tree([3, 9, 20, None, None, 15, 7]).root) == [[3], [9, 20], [15, 7]]
-    assert Solution().levelOrder(Tree([1]).root) == [[1]]
-    assert Solution().levelOrder(Tree([]).root) == []
+    assert Solution().levelOrderBottom(Tree([3, 9, 20, None, None, 15, 7]).root) == [[15, 7], [9, 20], [3]]
+    assert Solution().levelOrderBottom(Tree([1]).root) == [[1]]
+    assert Solution().levelOrderBottom(Tree([]).root) == []

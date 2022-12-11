@@ -1,7 +1,7 @@
 #
-# @lc app=leetcode.cn id=102 lang=python3
+# @lc app=leetcode.cn id=515 lang=python3
 #
-# [102] 二叉树的层序遍历
+# [515] 在每个树行中找最大值
 #
 
 from typing import List, Optional
@@ -12,16 +12,18 @@ from leetcode_tool import *
 
 
 class Solution:
-    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+    def largestValues(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
             return []
 
-        all_vals = []
+        max_vals = []
         cur_nodes = deque()
         cur_nodes.append(root)
 
         while cur_nodes:
-            all_vals.append([cur.val for cur in cur_nodes])
+            cur_vals = [cur.val for cur in cur_nodes]
+            max_vals.append(max(cur_vals))
+
             next_nodes = deque()
             for cur in cur_nodes:
                 if cur.left:
@@ -29,12 +31,12 @@ class Solution:
                 if cur.right:
                     next_nodes.append(cur.right)
             cur_nodes = next_nodes
-        return all_vals[::-1]
+
+        return max_vals
 
 # @lc code=end
 
 
 def test():
-    assert Solution().levelOrder(Tree([3, 9, 20, None, None, 15, 7]).root) == [[3], [9, 20], [15, 7]]
-    assert Solution().levelOrder(Tree([1]).root) == [[1]]
-    assert Solution().levelOrder(Tree([]).root) == []
+    assert Solution().largestValues(create_tree([1, 3, 2, 5, 3, None, 9])) == [1, 3, 9]
+    assert Solution().largestValues(create_tree([1, 2, 3])) == [1, 3]

@@ -13,22 +13,19 @@ from leetcode_tool import *
 
 class Solution:
     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
-        if not root:
-            return []
-
-        ans = []
+        res = []
         stack = deque()
         stack.append((root, False))
         while stack:
             node, visited = stack.pop()
             if node:
                 if visited:
-                    ans.append(node.val)
+                    res.append(node.val)
                 else:
                     stack.append((node.right, False))
                     stack.append((node, True))
                     stack.append((node.left, False))
-        return ans
+        return res
 
 # @lc code=end
 
