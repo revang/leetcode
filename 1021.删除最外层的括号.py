@@ -29,4 +29,3 @@ class Solution:
 
 def test():
     assert Solution().removeOuterParentheses(s="(()())(())") == "()()()"
-    # assert Solution().removeOuterParentheses(s="(()())(())") == "()()()"
