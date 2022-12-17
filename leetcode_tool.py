@@ -6,6 +6,11 @@ class TreeNode:
         self.val, self.left, self.right = val, left, right
 
 
+class BST:
+    def __init__(self, root):
+        self.root = root
+
+
 def create_tree(vals):
     """
     创建树
